@@ -41,6 +41,11 @@ Rails.application.configure do
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
+  # Set logger to STDOUT
+  config.logger = ActiveSupport::Logger.new(STDOUT)
+                                       .tap { |logger| logger.formatter = ::Logger::Formatter.new }
+                                       .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
+
   # Raise exceptions for disallowed deprecations.
   config.active_support.disallowed_deprecation = :raise
 
@@ -55,7 +60,6 @@ Rails.application.configure do
 
   # Highlight code that enqueued background job in logs.
   config.active_job.verbose_enqueue_logs = true
-
 
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
