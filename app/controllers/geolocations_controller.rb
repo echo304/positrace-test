@@ -7,6 +7,7 @@ class GeolocationsController < ApplicationController
   wrap_parameters false
 
   # GET /geolocations?endpoint=127.0.0.1
+  # GET /geolocations?endpoint=www.example.com
   def show
     if @geolocation.nil?
       logger.info("Geolocation not found for #{params[:endpoint]}")
@@ -18,6 +19,9 @@ class GeolocationsController < ApplicationController
   end
 
   # POST /geolocations
+  # {
+  #  "endpoint": "1.1.1.1"
+  # }
   def fetch_and_create
     ip = convert_endpoint_to_ip(geolocation_params[:endpoint])
     @geolocation = GeolocationAdapter.fetch_geolocation(ip)
@@ -32,9 +36,15 @@ class GeolocationsController < ApplicationController
   end
 
   # DELETE /geolocations?endpoint=127.0.0.1
+  # DELETE /geolocations?endpoint=www.example.com
   def destroy
-    @geolocation.destroy!
-    logger.info("Geolocation deleted for #{params[:endpoint]}")
+    if @geolocation.nil?
+      logger.info("Geolocation not found for #{params[:endpoint]}")
+      render status: :not_found
+    else
+      @geolocation.destroy!
+      logger.info("Geolocation deleted for #{params[:endpoint]}")
+    end
   end
 
   private
@@ -55,7 +65,7 @@ class GeolocationsController < ApplicationController
   def set_geolocation
     converted_ip = convert_endpoint_to_ip(params[:endpoint])
     logger.info("Converted ip: #{converted_ip} for #{params[:endpoint]}")
-    
+
     @geolocation = Geolocation.find_by_ip_address(converted_ip)
   end
 

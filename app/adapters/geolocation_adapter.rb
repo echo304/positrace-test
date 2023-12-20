@@ -43,9 +43,6 @@ class GeolocationAdapter
       # OtherGeolocationServiceResponse.new(other_response).to_geolocation_dto
     end
 
-    # export GEOLOCATION_ACCESS_KEY=2961338a7fc8ef8f2ed397df9c3a5480
-    # export GEOLOCATION_URL=http://api.ipstack.com/
-
     private
 
     def connection

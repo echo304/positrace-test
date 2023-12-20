@@ -1,0 +1,12 @@
+version: '1.0'
+services:
+  rails:
+    build: ./
+    command: bin/rails server -b 0.0.0.0
+    environment:
+      GEOLOCATION_ACCESS_KEY: {{YOUR_ACCESS_KEY}} # add your own key
+      GEOLOCATION_URL: http://api.ipstack.com/
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/docker/app # add our local code to dockerfile
