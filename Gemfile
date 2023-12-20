@@ -41,6 +41,9 @@ gem 'faraday'
 # Serializer for JSON output
 gem 'active_model_serializers', '~> 0.10.0'
 
+# Token based authentication for Rails JSON APIs
+gem 'devise_token_auth', '>= 1.2.0', git: "https://github.com/lynndylanhurley/devise_token_auth"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]
@@ -54,3 +57,4 @@ group :development do
   gem "error_highlight", ">= 0.4.0", platforms: [:ruby]
 end
 
+gem "factory_bot_rails", "~> 6.4"
