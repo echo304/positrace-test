@@ -24,7 +24,13 @@ class GeolocationsController < ApplicationController
   # }
   def fetch_and_create
     ip = convert_endpoint_to_ip(geolocation_params[:endpoint])
-    @geolocation = GeolocationAdapter.fetch_geolocation(ip)
+    begin
+      @geolocation = GeolocationAdapter.fetch_geolocation(ip)
+    rescue GeolocationAdapter::GeolocationServiceError => e
+      logger.error("Failed to fetch geolocation from external service: #{e.message}")
+      logger.error e.backtrace.join("\n")
+      render json: { error: "Failed to fetch geolocation from external service: #{e.message}" }, status: 503 and return
+    end
 
     if @geolocation.save
       logger.info("Geolocation saved for #{params[:endpoint]}")
